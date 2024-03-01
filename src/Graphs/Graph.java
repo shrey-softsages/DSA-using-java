@@ -1,16 +1,21 @@
 package Graphs;
 
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Graph{
 
     int [][] adjacency_matrix;
+
+    LinkedList<Integer> [] adjacency_list;
+
     int numVertices;
 
     Graph(int vertices)
     {
         this.numVertices = vertices;
         adjacency_matrix = new int[vertices][vertices];
+        adjacency_list = new LinkedList[numVertices];
     }
 
     public void add_edge(int from,int to)
@@ -28,6 +33,9 @@ public class Graph{
             adjacency_matrix[from][to] = 1;
             adjacency_matrix[to][from] = 1;
             System.out.println("Edge added successfully between "+from+" and "+to);
+
+
+
         }
     }
 
