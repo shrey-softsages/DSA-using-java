@@ -16,6 +16,10 @@ public class Graph{
         this.numVertices = vertices;
         adjacency_matrix = new int[vertices][vertices];
         adjacency_list = new LinkedList[numVertices];
+        for(int i=0;i<vertices;i++)
+        {
+            adjacency_list[i] = new LinkedList<Integer>();
+        }
     }
 
     public void add_edge(int from,int to)
@@ -33,11 +37,45 @@ public class Graph{
             adjacency_matrix[from][to] = 1;
             adjacency_matrix[to][from] = 1;
             System.out.println("Edge added successfully between "+from+" and "+to);
-
-
-
         }
     }
+
+    public void add_edge_list(int from,int to)
+    {
+        if(from >= numVertices || from < 0 || to >= numVertices || to < 0)
+        {
+            System.out.println("Invalid vertices, vertices should be between "+0+" and "+(numVertices-1));
+        }
+        else if(adjacency_list[from].contains(to))
+        {
+            System.out.println("Edge exists between vertices "+from+" and "+to);
+        }
+        else
+        {
+            adjacency_list[from].add(to);
+            adjacency_list[to].add(from);
+            System.out.println("Edge added successfully between "+from+" and "+to);
+        }
+    }
+
+    public void remove_edge_list(Integer from,Integer to)
+    {
+        if(from >= numVertices || from < 0 || to >= numVertices || to < 0)
+        {
+            System.out.println("Invalid vertices, vertices should be between "+0+" and "+(numVertices-1));
+        }
+        else if(!adjacency_list[from].contains(to))
+        {
+            System.out.println("Edge does not exists between "+from+" and "+to);
+        }
+        else
+        {
+            adjacency_list[from].remove(to);
+            adjacency_list[to].remove(from);
+            System.out.println("Edge removed successfully between "+from+" and "+to);
+        }
+    }
+
 
     public void remove_edge(int from,int to)
     {
@@ -69,6 +107,19 @@ public class Graph{
         }
     }
 
+    public void print_graph_list()
+    {
+        for(int i=0;i<adjacency_list.length;i++)
+        {
+            System.out.print(i);
+            for(Integer neighbor : adjacency_list[i])
+            {
+                System.out.print("->"+neighbor);
+            }
+            System.out.println();
+        }
+    }
+
     public static void main(String[] args) {
         int choice = 0,vertices = 0,from=0,to=0;
         Scanner s = new Scanner(System.in);
@@ -87,17 +138,17 @@ public class Graph{
                     System.out.println("Enter starting and ending vertices in graph : ");
                     from = s.nextInt();
                     to = s.nextInt();
-                    g.add_edge(from,to);
+                    g.add_edge_list(from,to);
                     break;
                 case 2:
                     System.out.println("Enter starting and ending vertices in graph : ");
                     from = s.nextInt();
                     to = s.nextInt();
-                    g.remove_edge(from,to);
+                    g.remove_edge_list(from,to);
                     break;
                 case 3:
                     System.out.println("Graph is:");
-                    g.print_graph();
+                    g.print_graph_list();
                     break;
                 case 4:
                     System.exit(0);
