@@ -1,16 +1,16 @@
 package Graphs;
 
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class Graph{
 
     int [][] adjacency_matrix;
 
     LinkedList<Integer> [] adjacency_list;
-
     int numVertices;
-
+    Stack<Integer> s;
+    boolean[] visited;
+    ArrayDeque<Integer> queue;
     Graph(int vertices)
     {
         this.numVertices = vertices;
@@ -20,6 +20,9 @@ public class Graph{
         {
             adjacency_list[i] = new LinkedList<Integer>();
         }
+        s = new Stack<Integer>();
+        visited = new boolean[vertices];
+        queue = new ArrayDeque<Integer>();
     }
 
     public void add_edge(int from,int to)
@@ -120,6 +123,51 @@ public class Graph{
         }
     }
 
+    public void dfs_traverse(Integer node)
+    {
+        System.out.print(node+"->");
+        visited[node] = true;
+        s.push(node);
+        for(Integer i :adjacency_list[node])
+        {
+            if(!visited[i])
+            {
+                visited[node]=true;
+                dfs_traverse(i);
+                s.pop();
+            }
+        }
+    }
+
+    public void bfs_traverse(Integer node)
+    {
+        visited[node] = true;
+        queue.add(node);
+        System.out.print(node);
+        while(!queue.isEmpty())
+        {
+            Integer e = queue.pop();
+            for(Integer t : adjacency_list[e])
+            {
+                if(!visited[t])
+                {
+                    System.out.print("->"+t);
+                    visited[t] = true;
+                    queue.add(t);
+                }
+            }
+        }
+    }
+
+
+    public void clean()
+    {
+        System.out.println();
+        Arrays.fill(visited,false);
+        s.clear();
+    }
+
+
     public static void main(String[] args) {
         int choice = 0,vertices = 0,from=0,to=0;
         Scanner s = new Scanner(System.in);
@@ -130,7 +178,9 @@ public class Graph{
             System.out.println("Press 1 to add edge in graph");
             System.out.println("Press 2 to remove edge in graph");
             System.out.println("Press 3 to show the graph");
-            System.out.println("Press 4 to exit graph");
+            System.out.println("Press 4 to do dfs traversing");
+            System.out.println("Press 5 to do dfs traversing");
+            System.out.println("Press 6 to exit graph");
             System.out.println("Enter your choice: ");
             choice = s.nextInt();
             switch (choice) {
@@ -151,6 +201,18 @@ public class Graph{
                     g.print_graph_list();
                     break;
                 case 4:
+                    System.out.println("Enter the starting node to traverse the graph: ");
+                    int start_node = s.nextInt();
+                    g.dfs_traverse(start_node);
+                    g.clean();
+                    break;
+                case 5:
+                    System.out.println("Enter the starting node to traverse the graph: ");
+                    int snode = s.nextInt();
+                    g.bfs_traverse(snode);
+                    g.clean();
+                    break;
+                case 6:
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice");
