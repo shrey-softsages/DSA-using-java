@@ -159,6 +159,41 @@ public class Graph{
         }
     }
 
+    public boolean detect_cycle_using_dfs(Integer node,Integer pnode)
+    {
+        visited[node] = true;
+        for(Integer t : adjacency_list[node])
+        {
+            if(!visited[t])
+            {
+                if(detect_cycle_using_dfs(t,node))
+                    return true;
+            }
+            else if(t != pnode)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean detect_cycle_using_bfs(Integer pnode)
+    {
+        int[] pnodes = new int[numVertices];
+        Arrays.fill(pnodes,-1);
+        while(!queue.isEmpty()) {
+            Integer node = queue.remove();
+            for (Integer t : adjacency_list[node]) {
+                if (!visited[t]) {
+                    queue.add(t);
+                    visited[t] = true;
+                    pnodes[t] = node;
+                } else if (pnodes[t]!=-1 && t != pnodes[t])
+                    return true;
+            }
+        }
+        return false;
+    }
+
+
 
     public void clean()
     {
@@ -179,8 +214,9 @@ public class Graph{
             System.out.println("Press 2 to remove edge in graph");
             System.out.println("Press 3 to show the graph");
             System.out.println("Press 4 to do dfs traversing");
-            System.out.println("Press 5 to do dfs traversing");
-            System.out.println("Press 6 to exit graph");
+            System.out.println("Press 5 to do bfs traversing");
+            System.out.println("Press 6 to detect cycle using dfs");
+            System.out.println("Press 7 to exit graph");
             System.out.println("Enter your choice: ");
             choice = s.nextInt();
             switch (choice) {
@@ -212,7 +248,16 @@ public class Graph{
                     g.bfs_traverse(snode);
                     g.clean();
                     break;
-                case 6:
+                    case 6:
+                        System.out.println("Enter the starting node to detect cycle in the graph: ");
+                        int start = s.nextInt();
+                        g.visited[start] = true;
+                        g.queue.add(start);
+                        System.out.println(g.detect_cycle_using_bfs(-1));
+//                        System.out.println(g.detect_cycle_using_dfs(start,-1));
+                        g.clean();
+                        break;
+                case 7:
                     System.exit(0);
                 default:
                     System.out.println("Invalid choice");
