@@ -186,7 +186,7 @@ public class Graph{
                     queue.add(t);
                     visited[t] = true;
                     pnodes[t] = node;
-                } else if (pnodes[t]!=-1 && t != pnodes[t])
+                } else if (pnodes[t]!=-1 && t != pnodes[node])
                     return true;
             }
         }
@@ -199,6 +199,7 @@ public class Graph{
     {
         System.out.println();
         Arrays.fill(visited,false);
+        queue.clear();
         s.clear();
     }
 
